@@ -11,7 +11,7 @@ commands:
         type: string
     steps:
       - attach_workspace:
-          at: ~
+          at: /home/circleci
       - run:
           name: Deploy app em << parameters.environment >>
           command: echo "Esta etapa deve subir a app em << parameters.environment >>"
@@ -28,7 +28,7 @@ jobs:
           name: Testar App
           command: echo "Esta etapa deve testar a app"
       - persist_to_workspace:
-          root: ~
+          root: /home/circleci
           paths:
             - project
 
