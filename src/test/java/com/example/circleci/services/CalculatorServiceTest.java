@@ -26,6 +26,6 @@ class CalculatorServiceTest {
 
     @Test
     void whenSum3And4ThenReturn7() {
-        assertEquals(7, calculatorService.sum(3, 4));
+        assertEquals(8, calculatorService.sum(3, 4));
     }
 }
