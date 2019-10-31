@@ -1,0 +1,70 @@
+version: 2.1
+executors:
+  java:
+    docker:
+      - image: circleci/openjdk:8
+
+commands:
+  deploy_application:
+    parameters:
+      environment:
+        type: string
+    steps:
+      - attach_workspace:
+          at: /root
+      - run:
+          name: Deploy app em << parameters.environment >>
+          command: echo "Esta etapa deve subir a app em << parameters.environment >>"
+
+jobs:
+  build_application:
+    executor: java
+    steps:
+      - checkout
+      - run:
+          name: Compilar App
+          command: echo "Esta etapa deve compilar a app"
+      - run:
+          name: Testar App
+          command: echo "Esta etapa deve testar a app"
+      - persist_to_workspace:
+          root: /root
+          paths:
+            - project
+
+  deploy_application_dev:
+    executor: java
+    steps:
+      - deploy_application:
+          environment: develop
+
+  deploy_application_prod:
+    executor: java
+    steps:
+      - deploy_application:
+          environment: prod
+
+
+workflows:
+  version: 2
+  develop:
+    jobs:
+      - build_application:
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy_application_dev:
+          requires:
+            - build_application
+
+  production:
+    jobs:
+      - build_application:
+          filters:
+            branches:
+              only:
+                - master
+      - deploy_application_prod:
+          requires:
+            - build_application
