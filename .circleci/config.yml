@@ -23,10 +23,10 @@ jobs:
       - checkout
       - run:
           name: Compilar App
-          command: echo "Esta etapa deve compilar a app"
+          command: ./gradlew clean build
       - run:
           name: Testar App
-          command: echo "Esta etapa deve testar a app"
+          command: ./gradlew build
       - persist_to_workspace:
           root: /home/circleci
           paths:
